@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container" style="margin-top: 90px; margin-bottom: 100px;">
+    <div class="row">
+        <h1 class="text-center">Text-Extraction</h1>
+        <hr style="width: 50%; margin: auto;">
+        <div class="my-3 ms-2">
+            <h3>Step 1</h3> Choose an image with text, and specify the language for precise text extraction.
+            <h3>Step 2</h3> Click "Extract" to effortlessly transform visual content into editable text with our
+            intuitive OCR technology.
+        </div>
+        <div class="main-section d-lg-flex d-md-flex justify-content-center align-items-center">
+            <!-- Half Section for Image Upload -->
+            <div class="upload-img-section col-lg-6 col-md-6 col-sm-12 p-2">
+                <div class="input-image card p-3">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <h4>Select Image</h4>
+                            <input type="file" name="image" id="image" class="form-control">
+                        </div>
+                        <div class="">
+                            <h4>Select Languages</h4>
+                            <Select name="languages" id="languages" multiple class="form-control">
+                                <option value="ar">Arabic</option>
+                                <option value="de">German</option>
+                                <option value="es">Spanish</option>
+                                <option value="fa">Persian</option>
+                                <option value="fr">French</option>
+                                <option value="ga">Irish</option>
+                                <option value="hi">Hindi</option>
+                                <option value="it">Italian</option>
+                                <option value="ja">Japanese</option>
+                                <option value="la">Latin</option>
+                                <option value="mn">Mongolian</option>
+                                <option value="mr">Marathi</option>
+                                <option value="pl">Polish</option>
+                                <option value="ru">Russian</option>
+                                <option value="ta">Tamil</option>
+                                <option value="te">Telugu</option>
+                                <option value="tr">Turkish</option>
+                                <option value="ur">Urdu</option>
+                                <option value="ch_sim">Chinese</option>
+                                <option value="en">English</option>
+                            </Select>
+                            <span class="ps-2">You can select multiple languages - (ScrollDown)</span>
+                        </div>
+                        <br>
+                        <div class="button-section d-flex" style="justify-content: right;">
+                            <button type="submit" class="button-86">Extract</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results-Section - (Text-Extracted Image Show-Section) -->
+            <div class="show-img-section col-lg-6 col-md-6 col-sm-12 p-2">
+                {% if image_path %}
+                <h3>Extracted Image: </h3>
+                <img src="{{ MEDIA_URL }}{{ processed_image_path }}" alt="result-img" class="img-fluid">
+                <hr>
+                {% endif %}
+                {% if result %}
+                <h3>Extracted Text:</h3>
+                <p id="extracted-text-container">
+                    {% for entry in result %}
+                    {{ entry.1 }}{% if not forloop.last %} {% endif %}
+                    {% endfor %}
+                </p>
+                <button class="button-86" id="copyButton" onclick="copyTextToClipboard()">Copy Text</button>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function copyTextToClipboard() {
+        // Get the text content from the container
+        var textToCopy = document.getElementById("extracted-text-container").innerText;
+
+        // Create a temporary textarea to hold the text
+        var tempTextArea = document.createElement("textarea");
+        tempTextArea.value = textToCopy;
+
+        // Append the textarea to the document
+        document.body.appendChild(tempTextArea);
+
+        // Select and copy the text
+        tempTextArea.select();
+        document.execCommand("copy");
+
+        // Remove the temporary textarea
+        document.body.removeChild(tempTextArea);
+
+        // Change button text to "Copied"
+        var copyButton = document.getElementById("copyButton");
+        copyButton.innerText = "Copied";
+
+        // Disable the button (optional, to prevent multiple clicks)
+        copyButton.disabled = true;
+    }
+</script>
+
+
+
+{% endblock content %}

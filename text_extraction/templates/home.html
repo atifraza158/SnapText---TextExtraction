@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<div class="container" style="margin-top: 40px;">
+    <div class="row">
+       <div class="main-section d-lg-flex d-md-flex justify-content-center align-items-center">
+        <!-- Half Section for Image Upload -->
+        <div class="upload-img-section col-lg-6 col-md-6 col-sm-12 p-2">
+            <h1>Extract Text From Images</h1>
+            <p>Effortlessly extract text from images with precision using SnapText. Unlock a seamless experience and save time on converting visual content into editable text. Yo Can Select upto 20 languages for text-extraction</p>
+            <a href="{% url 'text-extraction' %}" class="button-86">Explore</a>
+        </div>
+
+
+        <!-- Results-Section - (Text-Extracted Image Show-Section) -->
+        <div class="show-img-section col-lg-6 col-md-6 col-sm-12 p-2">
+            <img src="{% static '/images/title.jpg' %}" class='img-fluid' alt="result-img">
+        </div>
+       </div>
+    </div>
+</div>
+
+{% endblock content %}
